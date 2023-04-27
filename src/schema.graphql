@@ -21,31 +21,6 @@ type Message {
   updatedAt: String
 }
 
-type Client {
-  id: ID!
-  name: String
-  age: Int
-  products: [Product]
-}
-
-type Query {
-  clients: [Client]
-  client(id: ID!): Client
-  place: Place
-  products: [Product]
-  product(id: ID!): Product
-  GetMyProfile: GetMyProfileResponse!
-  user: User
-}
-
-type Mutation {
-  addClient(name: String!, age: Int!): Client
-  CompletePhoneVerification(phoneNumber: String!, key: String!): CompletePhoneVerificationResponse!
-  EmailSignIn(email: String!, password: String!): EmailSignInResponse!
-  FacebookConnect(firstName: String!, lastName: String!, email: String, fbId: String!): FacebookConnectResponse!
-  StartPhoneVerification(phoneNumber: String!): StartPhoneVerificationResponse!
-}
-
 type Place {
   id: Int!
   name: String!
@@ -59,11 +34,10 @@ type Place {
   updatedAt: String
 }
 
-type Product {
-  id: ID!
-  description: String
-  price: Int
-  client: Client
+type Query {
+  place: Place
+  GetMyProfile: GetMyProfileResponse!
+  user: User
 }
 
 type Ride {
@@ -94,7 +68,21 @@ type CompletePhoneVerificationResponse {
   token: String
 }
 
+type Mutation {
+  CompletePhoneVerification(phoneNumber: String!, key: String!): CompletePhoneVerificationResponse!
+  EmailSignIn(email: String!, password: String!): EmailSignInResponse!
+  EmailSignUp(firstName: String!, lastName: String!, email: String!, password: String!, profilePhoto: String!, age: Int!, phoneNumber: String!): EmailSignUpResponse!
+  FacebookConnect(firstName: String!, lastName: String!, email: String, fbId: String!): FacebookConnectResponse!
+  StartPhoneVerification(phoneNumber: String!): StartPhoneVerificationResponse!
+}
+
 type EmailSignInResponse {
+  ok: Boolean!
+  error: String
+  token: String
+}
+
+type EmailSignUpResponse {
   ok: Boolean!
   error: String
   token: String

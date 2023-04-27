@@ -23,6 +23,7 @@
     "types": "graphql-to-typescript ./src/schema.graphql ./src/types/graph.d.ts"
   },
   "dependencies": {
+    "@apollo/datasource-rest": "^5.1.0",
     "@apollo/server": "^4.6.0",
     "@graphql-tools/load-files": "^6.6.1",
     "@types/crypto-js": "^4.1.1",
@@ -47,5 +48,4 @@
     "request": "^2.88.2",
     "typeorm": "^0.3.15"
   }
-  
 }

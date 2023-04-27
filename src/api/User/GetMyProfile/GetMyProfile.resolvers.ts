@@ -1,23 +1,16 @@
+import { Resolvers } from "src/types/resolvers";
 
-
-module.exports = {
+const resolvers: Resolvers = {
   Query: {
-    GetMyProfile: async (_, __, { req }) => {
-      const { user } = req;
-      try{
-        return {
-            ok: true,
-            error: null,
-            user
-          };
-      } catch{
-        return {
-            ok: false,
-            error: "your not user",
-            user: null
-        }
+    GetMyProfile: async (parent, args, {req}, info)=>{
+      return {
+        ok: true,
+        error: null,
+
+
       }
-      
     }
   }
-};
+}
+
+export default resolvers;

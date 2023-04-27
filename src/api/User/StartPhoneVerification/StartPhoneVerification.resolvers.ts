@@ -1,7 +1,7 @@
 import { Resolvers } from "src/types/resolvers";
-import { StartPhoneVerificationMutationArgs, StartPhoneVerificationResponse } from '../../../types/graph';
 import Verification from "../../../entities/Verification";
 import sendSMS from "../../../utils/sendSMS";
+import { StartPhoneVerificationMutationArgs, StartPhoneVerificationResponse } from "../../../types/graph";
 
 
 const resolvers: Resolvers ={
@@ -11,7 +11,6 @@ const resolvers: Resolvers ={
             args: StartPhoneVerificationMutationArgs
         ): Promise<StartPhoneVerificationResponse> =>{
             const {phoneNumber} = args;
-            console.log("start")
             try {
                 const existingVerification = await Verification.findOneBy({payload: phoneNumber});
                 if(existingVerification) {
@@ -19,8 +18,7 @@ const resolvers: Resolvers ={
                 }
                 const newVerification = await Verification.create({payload: phoneNumber,
                 target: "PHONE"}).save();
-                const result= await sendSMS(newVerification.payload, newVerification.key);
-                    console.log(result)
+                 await sendSMS(newVerification.payload, newVerification.key);
                 return{
                     ok: true,
                     error: null

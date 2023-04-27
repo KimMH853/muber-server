@@ -7,7 +7,6 @@ const sendSMS = (phone, key)=>{
   var user_phone_number = phone;
   var user_auth_number = key;
   var resultCode = 404;
-  console.log(phone);
   const date = Date.now().toString();
   const uri = process.env.SERVICE_ID;
   const secretKey = process.env.NCP_SECRET_KEY;
@@ -17,7 +16,6 @@ const sendSMS = (phone, key)=>{
   const newLine = "\n";
   const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
   const url2 = `/sms/v2/services/${uri}/messages`;
-  console.log(process.env.SERVICE_ID);
   const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
 
   hmac.update(method);
@@ -30,7 +28,6 @@ const sendSMS = (phone, key)=>{
 
   const hash = hmac.finalize();
   const signature = hash.toString(CryptoJS.enc.Base64);
-console.log(process.env.SEND_PHONE)
   request(
     {
       method: method,
