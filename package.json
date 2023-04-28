@@ -11,6 +11,7 @@
     "@types/morgan": "^1.9.4",
     "@types/node": "^18.15.11",
     "@types/request": "^2.48.8",
+    "nodemailer": "^6.9.1",
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "tslint-config-prettier": "^1.18.0",

@@ -37,7 +37,6 @@ createConnection().then(() => {
 const jwt = async ( req, res:Response, next:NextFunction): Promise<void> =>{
   const token = req.get("X-JWT");
   if(token) {
-    console.log(token)
     const user = await decodeJWT(token);
     if(user) {
       req.user=user;
@@ -56,24 +55,7 @@ const server = new ApolloServer({
   resolvers,
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer }),
-    {
-      async requestDidStart(requestContext) {
-        return {
-          async willSendRequest(requestContext) {
-            const { response, context } = requestContext;
-            if (response.body.kind === 'single' && 'data' in response.body.singleResult) {
-              response.body.singleResult.extensions = {
-                ...response.body.singleResult.extensions,
-                hello: 'world',
-              };
-              if (context && context.req && context.req.headers) {
-                context.req.headers.set('Authorization', "1234");
-              }
-            }
-          },
-        };
-      }
-    },
+   
   ],
 });
 server.start().then(() => {

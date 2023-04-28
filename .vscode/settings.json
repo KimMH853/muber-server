@@ -3,6 +3,7 @@
         "asynciterable",
         "fbid",
         "muber",
+        "naver",
         "predev",
         "pretypes",
         "typeorm"

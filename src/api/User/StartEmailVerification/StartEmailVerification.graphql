@@ -1,0 +1,8 @@
+type StartEmailVerificationResponse {
+    ok: Boolean!
+    error: String
+}
+
+type Mutation {
+    StartEmailVerification(email: String!): StartEmailVerificationResponse!
+}
