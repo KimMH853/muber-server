@@ -26,3 +26,9 @@ type User {
   createdAt: String!
   updatedAt: String
 }
+
+query {
+  user {
+    id
+  }
+}
