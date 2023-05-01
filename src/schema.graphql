@@ -1,9 +1,3 @@
-{
-  user {
-    id
-  }
-}
-
 type Chat {
   id: Int!
   messages: [Message]
@@ -41,7 +35,7 @@ type Mutation {
   EmailSignIn(email: String!, password: String!): EmailSignInResponse!
   EmailSignUp(firstName: String!, lastName: String!, email: String!, password: String!, profilePhoto: String!, age: Int!, phoneNumber: String!): EmailSignUpResponse!
   FacebookConnect(firstName: String!, lastName: String!, email: String, fbId: String!): FacebookConnectResponse!
-  ReportMovement(orientation: Float, lat: Float, lng: Float): ReportMovementResponse!
+  ReportMovement(lastOrientation: Float, lastLat: Float, lastLng: Float): ReportMovementResponse!
   RequestEmailVerification: RequestEmailVerificationResponse!
   StartEmailVerification(email: String!): StartEmailVerificationResponse!
   StartPhoneVerification(phoneNumber: String!): StartPhoneVerificationResponse!
@@ -69,6 +63,7 @@ type Query {
   GetMyPlaces: GetMyPlacesResponse!
   place: Place
   GetMyProfile: GetMyProfileResponse!
+  GetNearbyDrivers: GetNearbyDriversResponse!
   user: User
 }
 
@@ -83,11 +78,6 @@ type Place {
   user: User!
   createdAt: String!
   updatedAt: String
-}
-
-type Query {
-  place: Place
-  GetMyProfile: GetMyProfileResponse!
 }
 
 type Ride {
@@ -121,6 +111,10 @@ type CompletePhoneVerificationResponse {
   ok: Boolean!
   error: String
   token: String
+}
+
+type Subscription {
+  DriversSubscription: User
 }
 
 type EmailSignInResponse {
