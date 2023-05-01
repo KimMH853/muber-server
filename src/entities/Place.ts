@@ -31,9 +31,10 @@ import {
     @Column({ nullable: true })
     userId: number;
   
-    @ManyToOne(type => User, user => user.places)
+    @ManyToOne(() => User, user => user.places)
     user: User;
-  
+    
+
     @CreateDateColumn() createdAt: string;
   
     @UpdateDateColumn() updatedAt: string;
