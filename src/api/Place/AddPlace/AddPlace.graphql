@@ -6,7 +6,7 @@ type AddPlaceResponse {
 type Mutation {
     AddPlace(name: String!
         lat: Float!
-        lnt: Float!
+        lng: Float!
         address: String!
         isFav: Boolean!): AddPlaceResponse!
 }
