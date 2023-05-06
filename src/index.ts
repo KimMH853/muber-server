@@ -103,7 +103,6 @@ const serverCleanup = useServer({
       context: async (ctx, msg, args) => {
         // Returning an object will add that information to
         // contextValue, which all of our resolvers have access to.
-        console.log(ctx)
         return getDynamicContext(ctx, msg, args); 
       },
       

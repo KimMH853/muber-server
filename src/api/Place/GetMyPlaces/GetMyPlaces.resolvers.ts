@@ -1,23 +1,23 @@
-import Place from "../../../entities/Place";
+import { getRepository } from "typeorm";
 import { GetMyPlacesResponse } from "../../../types/graph";
 import { Resolvers } from "../../../types/resolvers";
 import privateResolver from "../../../utils/privateResolver";
+import User from "../../../entities/User";
 
 const resolvers: Resolvers = {
   Query: {
     GetMyPlaces: privateResolver(
       async (_, __, { req }): Promise<GetMyPlacesResponse> => {
         try {
-          const places = await Place.find({
-            where: {
-                userId: req.user.id
-            }
-            
-          })
-          if (places) {
+          const result = await getRepository(User).createQueryBuilder("user")
+          .leftJoinAndSelect("user.places", "place")
+          .where("user.id = :id", { id: req.user.id })
+          .getOne();
+          
+          if (result) {
             return {
               ok: true,
-              places: places,
+              places: result.places,
               error: null
             };
           } else {

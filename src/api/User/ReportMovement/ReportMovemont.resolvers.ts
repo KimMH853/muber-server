@@ -10,9 +10,11 @@ const resolvers: Resolvers = {
             async(_, args: ReportMovementMutationArgs, {req, pubsub}): Promise<ReportMovementResponse> =>{
                 const user: User = req.user;
                 const notNull = cleanNullArgs(args);
-                pubsub.publish("driverUpdate", { DriversSubscription: user });
+                
                 try{
                     await User.update({id: user.id}, {...notNull});
+                    const updatedUser = await User.findOneBy({id: user.id});
+                    pubsub.publish("driverUpdate", { DriversSubscription: updatedUser });
                     return {
                         ok: true,
                         error: null

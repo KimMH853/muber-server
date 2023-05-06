@@ -62,6 +62,9 @@ class Ride extends BaseEntity {
 
   @ManyToOne(type => User, user => user.ridesAsDriver, { nullable: true })
   driver: User;
+  
+  // @JoinColumn()
+  // driverId: number;
 
   @Column({ nullable: true })
   chatId: number;
