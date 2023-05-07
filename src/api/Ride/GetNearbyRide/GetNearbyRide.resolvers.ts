@@ -3,7 +3,7 @@ import privateResolver from "../../../utils/privateResolver";
 import { GetNearbyRideResponse } from '../../../types/graph';
 import User from "../../../entities/User";
 import Ride from "../../../entities/Ride";
-import { Between } from "typeorm";
+import { getRepository } from "typeorm";
 
 const resolvers: Resolvers ={
     Query: {
@@ -13,14 +13,13 @@ const resolvers: Resolvers ={
                 if(user.isDriving) {
                     const {lastLat, lastLng} = user;
                     try {
-                        const ride = await Ride.findOne({
-                            where: {
-                                status: "REQUESTING",
-                                pickUpLat: Between(lastLat - 0.05, lastLat + 0.05),
-                                pickUpLng: Between(lastLng - 0.05, lastLng + 0.05)
-                                
-                            }
-                        })
+                        const ride = await getRepository(Ride).createQueryBuilder("ride")
+                            .leftJoinAndSelect("ride.passenger", "passenger")
+                            .where("ride.status = :status", { status:  "REQUESTING" })
+                            .andWhere("ride.pickUpLat BETWEEN :minLat AND :maxLat", {minLat: lastLat - 0.05, maxLat: lastLat + 0.05})
+                            .andWhere("ride.pickUpLng BETWEEN :minLng AND :maxLng", {minLng: lastLng - 0.05, maxLng: lastLng + 0.05})
+                            .getOne();
+                       
                         return {
                             ok: true,
                             error: null,

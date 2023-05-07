@@ -4,6 +4,7 @@ import { UpdateRideStatusMutationArgs, UpdateRideStatusResponse } from '../../..
 import User from "../../../entities/User";
 import Ride from "../../../entities/Ride";
 import Chat from "../../../entities/Chat";
+import { getRepository } from "typeorm";
 
 const resolvers: Resolvers = {
     Mutation: {
@@ -19,19 +20,22 @@ const resolvers: Resolvers = {
                 try {
                     let ride: any;
                     if(args.status === "ACCEPTED") {
-                        ride = await Ride.findOneBy({
-                            id: args.rideId,
-                            status: "REQUESTING"
-                            
-                        })
+                        ride = await getRepository(Ride).createQueryBuilder("ride")
+                        .leftJoinAndSelect("ride.passenger", "passenger")
+                        .where("ride.id = :id", { id: args.rideId })
+                        .andWhere("ride.status = :status", { status: "REQUESTING" })
+                        .getOne();
+                        console.log(ride)
                         if(ride) {
                             ride.driver = user;
                             user.isTaken = true;
                             user.save();
-                            await Chat.create({
+                            const chat = await Chat.create({
                                 driver: user,
-                                passengerId: ride.passengerId
-                            }).save()
+                                passenger: ride.passenger
+                            }).save();
+                            ride.chat = chat;
+                            ride.save();
                             
                         }
                     }else {
@@ -42,7 +46,7 @@ const resolvers: Resolvers = {
                        
                     }
                     if(ride) {
-                        ride.statues = args.status;
+                        ride.status = args.status;
                         ride.save();
                         pubsub.publish("rideUpdate", {RideStatusSubscription: ride});
                         return {

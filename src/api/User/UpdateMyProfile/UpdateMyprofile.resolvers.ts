@@ -9,7 +9,12 @@ const resolvers: Resolvers = {
         UpdateMyProfile: privateResolver(
             async (_, args:UpdateMyProfileMutationArgs, {req})=>{
                 const user: User = req.user;
-                const notNull = cleanNullArgs(args);
+                const notNull: any = cleanNullArgs(args);
+                if(notNull.password) {
+                    user.password = notNull.password;
+                    user.save();
+                    delete notNull.password;
+                }
                 try{
                     if(args.password !==null) {
                         user.password = args.password;
